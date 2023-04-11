@@ -1,0 +1,11 @@
+# TODO
+
+- Allow for reading in the required variables without having to hard code the file name in the script
+
+- Allow for using a remote backend
+
+- Allow for passing in the required variables via the command line or environment variables (terraform style) - see the .old files for examples
+
+- Allow for setting default tags in a way that isn't hardcoded.
+
+- Allow for setting additional tags from the default tags

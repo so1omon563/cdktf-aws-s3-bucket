@@ -1,0 +1,47 @@
+import { Construct } from "constructs";
+import { App, TerraformStack, TerraformOutput, TerraformVariable } from "cdktf";
+import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
+// Uses S3 module defined in cdktf.json
+import { S3 } from "./.gen/modules/s3";
+
+class ModuleStack extends TerraformStack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    const region = new TerraformVariable(this, "region", {
+      type: "string",
+      default: "us-east-1",
+      description: "Region to deploy into"
+    });
+
+    const bucketName = new TerraformVariable(this, "name", {
+      type: "string",
+      description: "Used as a prefix to generate the bucket name. Will be appended by the region and AWS account ID."
+    });
+
+    new AwsProvider(this, "aws", {
+      region: region.value,
+      defaultTags: [
+        {
+          tags: {
+            environment: "dev",
+            terraform: "true",
+            cdk: "true",
+          },
+        },
+      ],
+    });
+
+    const s3 = new S3(this, "bucket", {
+      name: bucketName.value,
+    });
+
+    new TerraformOutput(this, "bucketOutput", {
+      value: s3.bucketOutput
+    });
+  }
+}
+
+const app = new App();
+new ModuleStack(app, "s3-bucket");
+app.synth();
