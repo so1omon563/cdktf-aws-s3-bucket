@@ -8,11 +8,11 @@ This code can be used to create a single S3 bucket with a few default tags. It u
 
 ## Current limitations
 
-This currently creates a single S3 bucket with a few default tags that are hardcoded in the `main.ts`.
+- Currently applies few default tags that are hardcoded in the `main.ts`.
 
-This currently requires that you have a `variables.json` file in the root of the project that contains the required variables.
+- Currently requires that you have a `variables.json` file in the root of the project that contains the required variables.
 
-This currently can only use the local backend. Note that the local state files are specifically ignored in the `.gitignore` file. So you will need to ensure that you have a backup of your state files.
+- Currently can only use the local backend. Note that the local state files are specifically ignored in the `.gitignore` file. So you will need to ensure that you have a backup of your state files.
 
 ## Usage
 
@@ -57,7 +57,9 @@ It is HIGHLY suggested that you use the `aws-runas` utility to facilitate handli
 
 If you wish to pass in your credentials to your CDKTF commands (without having to manually export them), you can do so by running the following command (assuming you have `aws-runas` installed locally):
 
-    aws-runas -E <profile_name> cdktf deploy|destroy|diff|synth|plan|...
+```shell
+    aws-runas -E <profile_name> cdktf deploy|destroy|diff|synth|plan
+```
 
 Another useful option is to use the [EC2 metatdata server](https://mmmorris1975.github.io/aws-runas/metadata_credentials.html) built in to `aws-runas`.
 
