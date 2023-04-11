@@ -1,15 +1,23 @@
 import { Construct } from "constructs";
-import { App, TerraformStack, TerraformOutput } from "cdktf";
+import { App, TerraformStack, TerraformOutput, S3Backend } from "cdktf";
 import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
 // Uses S3 module defined in cdktf.json
 import { S3 } from "./.gen/modules/s3";
 // Uses variables from variables.json
-// Want to come up with a better way to do this
+// Want to come up with a better way to do this. 
 import vars from "./variables.json"
 
 class ModuleStack extends TerraformStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
+
+    new S3Backend(this, {
+      bucket: vars.backendBucketName,
+      encrypt: true,
+      key: `${vars.bucketName}/cdktf.tfstate`,
+      region: vars.region,
+      dynamodbTable: vars.backendBucketName,
+    });
 
 
     new AwsProvider(this, "aws", {

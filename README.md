@@ -8,11 +8,11 @@ This code can be used to create a single S3 bucket with a few default tags. It u
 
 ## Current limitations
 
-- Currently applies few default tags that are hardcoded in the `main.ts`.
+- Currently applies a few default tags that are hardcoded in the `main.ts`. They are not configurable at this time.
 
 - Currently requires that you have a `variables.json` file in the root of the project that contains the required variables.
 
-- Currently can only use the local backend. Note that the local state files are specifically ignored in the `.gitignore` file. So you will need to ensure that you have a backup of your state files.
+- Remote backend requires that you have a bucket and DynamoDB table (with the same name as the bucket) already created / configured. A future version of this code will create these if they do not exist.
 
 ## Usage
 
@@ -25,21 +25,24 @@ npm run get
 
 You will then be able to use the `cdktf` commands to deploy, destroy, or diff your code.
 
-At the moment, this is a very simple example of creating an S3 bucket using CDKTF. It currently requires that 2 variables be passed in using the `variables.json` file. Making this more elegant is the first thing on my list of TODOs.
+At the moment, this is a very simple example of creating an S3 bucket using CDKTF. It currently requires that 3 variables be passed in using the `variables.json` file. Making this more elegant is the first thing on my list of TODOs.
 
-The 2 values are `region` and `bucketName`.
+The 3 values are `backendBucketName`, `bucketName`, and `region`.
 
-- `region` is the AWS region that you wish to create the bucket in.
+- `backendBucketName` is the name of the bucket that you wish to use for your Terraform state file. This bucket must already exist. A DynamoDB table with the same name must also exist for locking purposes. A future version of this code will create this bucket if it does not exist.
 
 - `bucketName` is the naming prefix of the bucket name that you wish to create. All buckets created by this module will have the `region` and `Account ID` appended to the end of the `bucketName` to help ensure uniqueness.
+
+- `region` is the AWS region that you wish to create the bucket in.
 
 An example of the `variables.json` file is below:
 
 ```json
 {
+    "backendBucketName": "CHANGEME",
     "bucketName": "cdk-json",
     "region": "us-east-1"
-}
+}   
 ```
 
 ## Technical Requirements
