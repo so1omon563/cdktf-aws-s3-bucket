@@ -1,5 +1,5 @@
 {
-    "backendBucketName": "ife-548828207093-us-east-1-tfstate",
+    "backendBucketName": "CHANGEME",
     "bucketName": "cdk-json",
     "region": "us-east-1"
 }
